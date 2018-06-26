@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
 class Sort extends Component {
+  constructor(props) {
+    super(props);
+  }
+  onClick (sortName, sortValue) {
+    // console.log(sortName + '-' + sortValue);
+
+    this.props.onSort(sortName, sortValue);
+  } 
   render() {
     return (
       <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -16,8 +24,8 @@ class Sort extends Component {
           </button>
 
           <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li>
-              <a role="button" className="sort_selected">
+            <li onClick={ () => this.onClick('name', 1) }>
+              <a role="button" className={(this.props.sortName === "name" && this.props.sortValue === 1) ? "sort_selected" : ""}>
                 <span className="fa fa-sort-alpha-asc pr-5">
                   Name A-Z
                 </span>
@@ -25,8 +33,8 @@ class Sort extends Component {
               </a>
             </li>
 
-            <li>
-              <a role="button">
+            <li onClick={ () => this.onClick('name', -1) }>
+              <a role="button" className={(this.props.sortName === "name" && this.props.sortValue === -1) ? "sort_selected" : ""}>
                 <span className="fa fa-sort-alpha-desc pr-5">
                   Name Z-A
                 </span>
@@ -34,16 +42,16 @@ class Sort extends Component {
               </a>
             </li>
             <li role="separator" className="devider"></li>
-            <li>
-              <a role="button">
+            <li onClick={ () => this.onClick('status', 1) }>
+              <a role="button" className={(this.props.sortName === "status" && this.props.sortValue === 1) ? "sort_selected" : ""}>
                 <span className="fa fa-sort-alpha-desc pr-5">
                   Active
                 </span>
                 
               </a>
             </li>
-            <li>
-              <a role="button">
+            <li onClick={ () => this.onClick('status', -1) }>
+              <a role="button" className={(this.props.sortName === "status" && this.props.sortValue === -1) ? "sort_selected" : ""}>
                 <span className="fa fa-sort-alpha-desc pr-5">
                   InActive
                 </span>

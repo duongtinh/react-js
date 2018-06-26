@@ -4,6 +4,7 @@ import './App.css';
 import TaskForm from './components/TaskForm';
 import Control from './components/Control';
 import TaskList from './components/TaskList';
+import Demo from './demoredux/Demo';
 class App extends Component {
 
   constructor (props) {
@@ -16,7 +17,9 @@ class App extends Component {
         name: '',
         status: -1
       },
-      keyword: ''
+      keyword: '',
+      sortName: 'name',
+      sortValue: 1
     }
   }
 
@@ -26,7 +29,7 @@ class App extends Component {
       this.setState({
         tasks: tasks
       })
-      console.log(tasks);
+      // console.log(tasks);
     }
   }
 
@@ -148,8 +151,16 @@ class App extends Component {
       keyword: keyword
     });
   }
+
+  onSort = (sortName, sortValue) => {
+    this.setState({
+      sortName: sortName,
+      sortValue: sortValue
+    })
+    // console.log(this.state);
+  }
   render() {
-    var { tasks, isDisplayForm, taskEditing , filter , keyword } = this.state; // var tasks = this.state.tasks;
+    var { tasks, isDisplayForm, taskEditing , filter , keyword, sortName, sortValue } = this.state; // var tasks = this.state.tasks;
     var eleTaskForm = isDisplayForm ? <TaskForm  onHideForm= { this.onHideForm } onSubmit={ this.onSubmit } taskEditing={ taskEditing }/> : '';
     if (filter) {
       if (filter.name) {
@@ -172,6 +183,21 @@ class App extends Component {
       });
     }
 
+    if (sortName === 'name') {
+      tasks.sort((a, b) => {
+        if (a.name > b.name) return sortValue;
+        else if (a.name < b.name) return -sortValue;
+        else return 0;
+      })
+    } else {
+      tasks.sort((a, b) => {
+        if (a.status > b.status) return sortValue;
+        else if (a.status < b.status) return -sortValue;
+        else return 0;
+      })
+    }
+
+    console.log(sortName, "-", sortValue);
     return (
       <div className="container">
         <div className="text-center">
@@ -193,7 +219,7 @@ class App extends Component {
             </button>*/}
             
             {/*sort - search*/}
-            <Control onSearch={ this.onSearch } />
+            <Control onSearch={ this.onSearch } onSort={ this.onSort } sortName={ sortName } sortValue={ sortValue }/>
             
             <div className="row mt-15">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
